@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="icon" type="image/x-icon" href="../favicon.ico" />
+    <meta charset="utf-8" />
+    <title>Streaming video processing with GPU.js</title>
+    <script src="js/gpu-browser.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+      input[type='checkbox'] {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div style="text-align: center">
+      <h1>TIC4005 Project 1 - Image processing: implementation and analysis</h1>
+      <h2>Submitted by Sim Yizhun (A0211422B)</h2>
+      <label for="operating-mode"> <b>Operating Mode: </b></label>
+      <input type="checkbox" id="gpu-enabled" checked /><span id="display-mode"
+        >GPU Mode</span
+      >
+    </div>
+    <div class="row" style="display: flex">
+      <div class="column">
+        <div>
+          <p>
+            <b style="color: red"
+              >*Pipelining can only be performed when GPU mode is [Enabled]
+              (multi-selection on video filters)
+            </b>
+          </p>
+          <p>
+            Please select the video filters you would like to run:
+            <span>
+              <label
+                ><input type="checkbox" id="weird-filter" /> Pixalation
+                filter</label
+              ></span
+            >
+          </p>
+        </div>
+        <div>
+          <label for="bgimage">
+            <input
+              type="checkbox"
+              id="background-image"
+              name="weird-filterss"
+              value="backgroundImage"
+            />
+            Background Image
+          </label>
+
+          <label for="grayscale">
+            <input
+              type="checkbox"
+              id="grayscale-filter"
+              name="weird-filterss"
+              value="grayscale"
+            />
+            Grayscale</label
+          >
+          <label for="invert">
+            <input
+              type="checkbox"
+              id="invert-filter"
+              name="weird-filterss"
+              value="invert"
+            />
+            Invert</label
+          >
+          <label for="red">
+            <input
+              type="checkbox"
+              id="red-filter"
+              name="weird-filterss"
+              value="red"
+            />
+            Red</label
+          >
+          <label for="green">
+            <input
+              type="checkbox"
+              id="green-filter"
+              name="weird-filterss"
+              value="green"
+            />
+            Green</label
+          >
+        </div>
+        <div>
+          <label for="blue">
+            <input
+              type="checkbox"
+              id="blue-filter"
+              name="weird-filterss"
+              value="blue"
+            />
+            Blue</label
+          >
+          <label for="mirror">
+            <input
+              type="checkbox"
+              id="mirror-filter"
+              name="weird-filterss"
+              value="mirror"
+            />
+            Mirror</label
+          >
+          <label for="flip">
+            <input
+              type="checkbox"
+              id="flip-filter"
+              name="weird-filterss"
+              value="flip"
+            />
+            Flip</label
+          >
+          <label for="sepia">
+            <input
+              type="checkbox"
+              id="sepia-filter"
+              name="weird-filterss"
+              value="sepia"
+            />
+            Sepia</label
+          >
+          <label for="saturation">
+            <input
+              type="checkbox"
+              id="saturation-filter"
+              name="weird-filterss"
+              value="saturation"
+            />
+            Saturation</label
+          >
+        </div>
+        <div>
+          <p>
+            Please select the video filters you would like to run:
+            <span
+              ><label
+                ><input type="checkbox" id="edge-detection-filter" /> Edge
+                Detection</label
+              ></span
+            >
+          </p>
+        </div>
+
+        <!-- <div> -->
+        <div>
+          <label for="prewit-matrix">
+            <input
+              type="checkbox"
+              id="prewit-matrix"
+              name="edge-detection-filters"
+              value="prewitt"
+            />
+            Prewitt Operator</label
+          >
+          <label for="sobel-matrix">
+            <input
+              type="checkbox"
+              id="sobel-matrix"
+              name="edge-detection-filters"
+              value="sobel"
+            />
+            Sobel Operator</label
+          >
+          <label for="laplacian-matrix">
+            <input
+              type="checkbox"
+              id="laplacian-matrix"
+              name="edge-detection-filters"
+              value="laplacian"
+            />
+            Laplacian</label
+          >
+        </div>
+        <div>
+          <label for="sharpen-matrix">
+            <input
+              type="checkbox"
+              id="sharpen-matrix"
+              name="edge-detection-filters"
+              value="sharpen"
+            />
+            Sharpen Matrix</label
+          >
+          <label for="gaussian-blur-matrix">
+            <input
+              type="checkbox"
+              id="gaussian-blur-matrix"
+              name="edge-detection-filters"
+              value="gaussianBlur"
+            />
+            Gaussian Blur Matrix</label
+          >
+          <label for="emboss-matrix">
+            <input
+              type="checkbox"
+              id="emboss-matrix"
+              name="edge-detection-filters"
+              value="emboss"
+            />
+            Emboss Matrix</label
+          >
+        </div>
+      </div>
+      <div class="column">
+        <div id="canvas-parent" class="grid-item">
+          <h3>
+            GPU.js Graphical Output <span id="fps-number">0</span
+            ><span> fps</span>
+          </h3>
+          <h4>
+            Number of computational runs:
+            <span id="max-number-computation">
+              <input
+                type="range"
+                min="1"
+                max="200"
+                value="200"
+                id="input-slider"
+              />
+              <output></output>
+            </span>
+          </h4>
+          <h4 id="computation-log-message">
+            Average runtime of kernelRenderGraphical
+          </h4>
+        </div>
+      </div>
+    </div>
+    <!-- </div> -->
+
+    <video hidden id="video" width="1024" height="768"></video>
+    <canvas hidden id="videoCanvas" width="1024" height="768"></canvas>
+
+    <script src="js/videosetup.js"></script>
+
+    <script src="js/kernel_project1_final.js"></script>
+  </body>
+</html>
